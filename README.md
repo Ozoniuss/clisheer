@@ -10,8 +10,9 @@ List of commands
 - [x] `clisheer show lite` shows how much money have been spent this month, and how much money is expected to be spent this month;
 - [x] `clisheer show period` shows the current period set;
 - [ ] `clisheer show all` shows the entire sheet of the month;
-- [ ] `clisheer categories` shows just the big categories with their running total;
-- [ ] `clisheer category food` shows the data for a single category;
+- [x] `clisheer show debts` shows active debts; 
+- [ ] `clisheer show categories` shows just the big categories with their running total;
+- [ ] `clisheer show category food` shows the data for a single category;
 - [ ] `clisheer add category food` adds a new category if it doesn't exist;
 - [ ] `closheer add subcategory "food" "going out"` adds a new subcategory if it doesn't exist;
 - [ ] `clisheer remove category` removes a category from this month and all expenses associated with it;
