@@ -17,7 +17,7 @@ import (
 // pingCmd represents the ping command
 var pingCmd = &cobra.Command{
 	Use:   "ping",
-	Short: "Checks if the casheer backend is active.",
+	Short: "Check if the casheer backend is active",
 	Run: func(cmd *cobra.Command, args []string) {
 		color.Println(color.Green + "Pinging casheer server...")
 		resp, err := http.Get("http://localhost:8033")
