@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Ozoniuss/clisheer/cmd/set"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -57,6 +58,8 @@ func Execute() {
 
 func init() {
 	cobra.OnInitialize(initConfig)
+
+	rootCmd.AddCommand(set.SetCmd)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
