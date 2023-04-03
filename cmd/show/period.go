@@ -41,7 +41,6 @@ avoid cluttering the terminal with irrelevant information.
 }
 
 func init() {
-	ShowCmd.AddCommand(periodCmd)
 
 	// Here you will define your flags and configuration settings.
 

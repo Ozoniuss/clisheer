@@ -3,6 +3,7 @@ package show
 import (
 	"fmt"
 
+	"github.com/Ozoniuss/casheer/pkg/casheerapi"
 	"github.com/Ozoniuss/clisheer/internal/calls"
 	"github.com/Ozoniuss/clisheer/internal/color"
 	"github.com/Ozoniuss/clisheer/internal/format"
@@ -13,10 +14,9 @@ import (
 // liteCmd represents the period command
 var liteCmd = &cobra.Command{
 	Use:   "lite",
-	Short: "Set current period",
+	Short: "Show running totals for current period",
 	Long: `
-Current period consists of month and year, and helps filtering out expenses to
-avoid cluttering the terminal with irrelevant information.
+Includes expected and actual income, as well as expected and actual money spent.
 `,
 	Run: func(cmd *cobra.Command, args []string) {
 
@@ -26,9 +26,9 @@ avoid cluttering the terminal with irrelevant information.
 			color.Printf("Could not get current period: %s\n", err.Error())
 		}
 
-		resp, err := calls.MakeGET(fmt.Sprintf("http://localhost:8033/api/totals/?year=%d&month=%d", year, month))
+		resp, err := calls.MakeGET[casheerapi.GetTotalResponse](fmt.Sprintf("http://localhost:8033/api/totals/?year=%d&month=%d", year, month))
 		if err != nil {
-			color.Printf(color.Red, "GET request failed: %s", err.Error())
+			color.Printf(color.Red, "Could not retrieve current month status: %s", err.Error())
 			return
 		}
 
@@ -38,8 +38,6 @@ avoid cluttering the terminal with irrelevant information.
 }
 
 func init() {
-	ShowCmd.AddCommand(liteCmd)
-
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
