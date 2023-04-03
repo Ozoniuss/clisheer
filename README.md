@@ -7,7 +7,8 @@ List of commands
 
 - [x] `clisheer ping` checks whether the expenses server is running;
 - [x] `clisheer set period --year 2023 --month 11 (or --now)` sets the "current" year and month (defaults to current year and month otherwise);
-- [ ] `clisheer show lite` shows how much money have been spent this month, and how much money is expected to be spent this month;
+- [x] `clisheer show lite` shows how much money have been spent this month, and how much money is expected to be spent this month;
+- [x] `clisheer show period` shows the current period set;
 - [ ] `clisheer show all` shows the entire sheet of the month;
 - [ ] `clisheer categories` shows just the big categories with their running total;
 - [ ] `clisheer category food` shows the data for a single category;
