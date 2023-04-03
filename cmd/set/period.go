@@ -49,6 +49,7 @@ avoid cluttering the terminal with irrelevant information.
 		err := state.SetPeriod(year, month)
 		if err != nil {
 			color.Printf(color.Red, "Could not set period: %s", err.Error())
+			return
 		}
 		color.Printf(color.Green, "State modified successfully with year %d and month %d.", year, month)
 	},
