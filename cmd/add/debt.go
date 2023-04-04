@@ -8,6 +8,7 @@ import (
 	"github.com/Ozoniuss/clisheer/internal/calls"
 	"github.com/Ozoniuss/clisheer/internal/color"
 	"github.com/Ozoniuss/clisheer/internal/format"
+	"github.com/Ozoniuss/clisheer/internal/prompter"
 	"github.com/spf13/cobra"
 )
 
@@ -39,7 +40,12 @@ Fill in the prompter details or read the debt from a file.
 				return
 			}
 		} else {
-			// Use prompter for the user.
+			payload = prompter.DefaultJSONPrompter(
+				"Please enter debt data.",
+				prompter.TypedField{Name: "person", Ftype: prompter.STRING_TYPE},
+				prompter.TypedField{Name: "amount", Ftype: prompter.FLOAT32_TYPE},
+				prompter.TypedField{Name: "details", Ftype: prompter.STRING_TYPE},
+			)
 		}
 
 		resp, errResp, err := calls.MakePOST[
@@ -61,7 +67,7 @@ Fill in the prompter details or read the debt from a file.
 		}
 
 		if resp != nil {
-			color.Printf(color.Green, "Added debt for %s with value %f (id %v).\n",
+			color.Printf(color.Green, "Added debt for %s with value %.2f (id %v).\n",
 				resp.Data.Attributes.Person, resp.Data.Attributes.Amount, resp.Data.Id)
 			return
 		}
