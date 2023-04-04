@@ -11,12 +11,13 @@ List of commands
 - [x] `clisheer show period` shows the current period set;
 - [ ] `clisheer show all` shows the entire sheet of the month;
 - [x] `clisheer show debts` shows active debts; 
+- [x] `clisheer delete debt 12345678-1234-5678-1234-123456781234` removes a single debt;
 - [ ] `clisheer show categories` shows just the big categories with their running total;
 - [ ] `clisheer show category food` shows the data for a single category;
 - [ ] `clisheer add category food` adds a new category if it doesn't exist;
 - [ ] `closheer add subcategory "food" "going out"` adds a new subcategory if it doesn't exist;
-- [ ] `clisheer remove category` removes a category from this month and all expenses associated with it;
-- [ ] `clisheer remove subcategory "food" "going out"` removes a subcategory and all expenses associated with it;
+- [ ] `clisheer delete category` removes a category from this month and all expenses associated with it;
+- [ ] `clisheer delete subcategory "food" "going out"` removes a subcategory and all expenses associated with it;
 - [ ] `clisheer duplicate period` duplicates all categories for the next period, assuming no entry exists for the new period (otherwise must be forced to overwrite);
 - [ ] `clisheer new period interactive` goes through all expenses of the current period, and interactively allows keeping or discarding subcategories;
 - [ ] `clisheer scan jsonfile` scans through a json file of expenses from revolut format and interactively asks if you want to add all expenses;
