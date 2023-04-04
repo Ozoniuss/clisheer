@@ -17,7 +17,7 @@ List of commands
 
 - [x] `clisheer show debts` shows active debts; 
 - [ ] `clisheer add debt` allows adding a debt interactively;
-- [ ] `clisheer add debt --file debt.json` allows adding a debt from a file (initially only json, but multiple formats may be supported);
+- [x] `clisheer add debt --file debt.json` allows adding a debt from a file (initially only json, but multiple formats may be supported);
 - [x] `clisheer delete debt 12345678-1234-5678-1234-123456781234` removes a single debt;
 - [x] `clisheer update debt 12345678-1234-5678-1234-123456781234` updates a single debt;
 
