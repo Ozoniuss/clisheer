@@ -26,13 +26,18 @@ Includes expected and actual income, as well as expected and actual money spent.
 			color.Printf("Could not get current period: %s\n", err.Error())
 		}
 
-		resp, err := calls.MakeGET[casheerapi.GetTotalResponse](fmt.Sprintf("http://localhost:8033/api/totals/?year=%d&month=%d", year, month))
+		resp, errResp, err := calls.MakeGET[casheerapi.GetTotalResponse](fmt.Sprintf("http://localhost:8033/api/totals/?year=%d&month=%d", year, month))
 		if err != nil {
 			color.Printf(color.Red, "Could not retrieve current month status: %s", err.Error())
 			return
 		}
 
-		format.DisplayGetTotalResponse(resp)
+		if errResp != nil {
+			format.DisplayErrorResponse(*errResp)
+			return
+		}
+
+		format.DisplayGetTotalResponse(*resp)
 		return
 	},
 }

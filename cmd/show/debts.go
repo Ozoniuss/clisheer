@@ -21,9 +21,14 @@ var debtsCmd = &cobra.Command{
 	Long:  ``,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		resp, err := calls.MakeGET[casheerapi.ListDebtResponse](fmt.Sprintf("http://localhost:8033/api/debts/"))
+		resp, respErr, err := calls.MakeGET[casheerapi.ListDebtResponse](fmt.Sprintf("http://localhost:8033/api/debts/"))
 		if err != nil {
 			color.Printf(color.Red, "Could not retrieve debts: %s", err.Error())
+			return
+		}
+
+		if respErr != nil {
+			format.DisplayErrorResponse(*respErr)
 			return
 		}
 
@@ -35,7 +40,7 @@ var debtsCmd = &cobra.Command{
 			}
 			color.Println(color.White, string(out))
 		} else {
-			format.DisplayListDebtResponse(resp, showDebtVerbose)
+			format.DisplayListDebtResponse(*resp, showDebtVerbose)
 		}
 	},
 }
