@@ -1,7 +1,6 @@
 package add
 
 import (
-	"encoding/json"
 	"os"
 	"path/filepath"
 
@@ -52,12 +51,7 @@ Fill in the prompter details or read the debt from a file.
 		}
 
 		if showDebtResponse {
-			out, err := json.MarshalIndent(resp, "", "  ")
-			if err != nil {
-				color.Printf(color.Red, "Could not print response: %s\n", err.Error())
-				return
-			}
-			color.Println(color.White, string(out))
+			format.DisplayRawResponse(resp)
 			return
 		}
 

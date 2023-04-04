@@ -1,7 +1,6 @@
 package show
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/Ozoniuss/casheer/pkg/casheerapi"
@@ -33,12 +32,8 @@ var debtsCmd = &cobra.Command{
 		}
 
 		if showDebtResponse {
-			out, err := json.MarshalIndent(resp, "", "  ")
-			if err != nil {
-				color.Printf(color.Red, "Could not print response: %s\n", err.Error())
-				return
-			}
-			color.Println(color.White, string(out))
+			format.DisplayRawResponse(resp)
+			return
 		} else {
 			format.DisplayListDebtResponse(*resp, showDebtVerbose)
 		}

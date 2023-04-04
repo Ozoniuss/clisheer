@@ -1,7 +1,6 @@
 package delete
 
 import (
-	"encoding/json"
 	"fmt"
 
 	"github.com/Ozoniuss/casheer/pkg/casheerapi"
@@ -25,18 +24,12 @@ var debtsCmd = &cobra.Command{
 
 		resp, errResp, err := calls.MakeDELETE[casheerapi.DeleteDebtResponse](fmt.Sprintf("http://localhost:8033/api/debts/%s", id))
 		if err != nil {
-			color.Printf(color.Red, "Could not retrieve debts: %s", err.Error())
+			color.Printf(color.Red, "Could not delete debt: %s", err.Error())
 			return
 		}
 
 		if showDebtResponse {
-			out, err := json.MarshalIndent(resp, "", "  ")
-			if err != nil {
-				color.Printf(color.Red, "Could not print response: %s\n", err.Error())
-				return
-			}
-			color.Println(color.White, string(out))
-			return
+			format.DisplayRawResponse(resp)
 		}
 
 		// Only using multiple ifs to capture unexpected behaviours and show

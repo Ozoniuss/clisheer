@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/Ozoniuss/clisheer/cmd/add"
 	"github.com/Ozoniuss/clisheer/cmd/delete"
 	"github.com/Ozoniuss/clisheer/cmd/set"
 	"github.com/Ozoniuss/clisheer/cmd/show"
@@ -64,6 +65,7 @@ func init() {
 	rootCmd.AddCommand(set.SetCmd)
 	rootCmd.AddCommand(show.ShowCmd)
 	rootCmd.AddCommand(delete.DeleteCmd)
+	rootCmd.AddCommand(add.AddCmd)
 
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
