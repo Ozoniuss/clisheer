@@ -31,7 +31,7 @@ func MakePATCH[R casheerapi.UpdateDebtRequest, T casheerapi.UpdateDebtResponse](
 	}
 	request.Header.Add("Content-Type", "application/json")
 
-	resp, err := http.DefaultClient.Do(request)
+	resp, err := client.Do(request)
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not initiate PATCH request: %w", err)
 	}

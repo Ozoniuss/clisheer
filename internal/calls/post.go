@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 
 	"github.com/Ozoniuss/casheer/pkg/casheerapi"
 )
@@ -25,7 +24,7 @@ func MakePOST[R casheerapi.CreateDebtRequest, T casheerapi.CreateDebtResponse](u
 
 	reqBody := bytes.NewReader(payload)
 
-	resp, err := http.Post(url, "application/json", reqBody)
+	resp, err := client.Post(url, "application/json", reqBody)
 	if err != nil {
 		return nil, nil, fmt.Errorf("could not initiate POST request: %w", err)
 	}

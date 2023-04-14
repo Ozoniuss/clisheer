@@ -21,7 +21,7 @@ func MakeDELETE[T casheerapi.DeleteDebtResponse](url string) (*T, *casheerapi.Er
 		return nil, nil, fmt.Errorf("could not initiate DELETE request: %w", err)
 	}
 
-	resp, err := http.DefaultClient.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		return nil, nil, fmt.Errorf("DELETE request failed: %w", err)
 	}

@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"net/http"
 
 	"github.com/Ozoniuss/casheer/pkg/casheerapi"
 )
@@ -16,7 +15,7 @@ func MakeGET[T casheerapi.GetTotalResponse | casheerapi.ListDebtResponse](url st
 	var respData T
 	var respErr casheerapi.ErrorResponse
 
-	resp, err := http.Get(url)
+	resp, err := client.Get(url)
 	if err != nil {
 		return nil, nil, fmt.Errorf("GET request failed: %w", err)
 	}
