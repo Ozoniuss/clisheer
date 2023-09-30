@@ -1,12 +1,12 @@
 package add
 
 import (
+	"fmt"
+	"math"
 	"os"
 	"path/filepath"
 
-	"github.com/Ozoniuss/casheer/pkg/casheerapi"
-	"github.com/Ozoniuss/clisheer/internal/calls"
-	"github.com/Ozoniuss/clisheer/internal/color"
+	"github.com/Ozoniuss/clisheer/casheer"
 	"github.com/Ozoniuss/clisheer/internal/format"
 	"github.com/Ozoniuss/clisheer/internal/prompter"
 	"github.com/spf13/cobra"
@@ -25,52 +25,38 @@ Fill in the prompter details or read the debt from a file.
 	`,
 	Run: func(cmd *cobra.Command, args []string) {
 
-		var payload []byte
-
 		if addDebtFile != "" {
+			var payload []byte
 			fp, err := filepath.Abs(addDebtFile)
 			if err != nil {
-				color.Printf(color.Red, "Could not find path: %s", err.Error())
+				fmt.Fprintf(os.Stderr, "Could not find path: %s", err.Error())
 				return
 			}
 
 			payload, err = os.ReadFile(fp)
 			if err != nil {
-				color.Printf(color.Red, "Could not read file content: %s", err.Error())
+				fmt.Fprintf(os.Stderr, "Could not read file content: %s", err.Error())
 				return
 			}
-		} else {
-			payload = prompter.DefaultJSONPrompter(
-				"Please enter debt data.",
-				prompter.TypedField{Name: "person", Ftype: prompter.STRING_TYPE},
-				prompter.TypedField{Name: "amount", Ftype: prompter.FLOAT32_TYPE},
-				prompter.TypedField{Name: "details", Ftype: prompter.STRING_TYPE},
-			)
-		}
-
-		resp, errResp, err := calls.MakePOST[
-			casheerapi.CreateDebtRequest,
-			casheerapi.CreateDebtResponse]("http://localhost:8033/api/debts/", payload)
-		if err != nil {
-			color.Printf(color.Red, "Could not add debt: %s", err.Error())
+			fmt.Println("feature not implemented yet.")
+			fmt.Println(payload)
 			return
 		}
 
+		debt := prompter.CreateDebtPrompter("please enter debt details below:")
+
+		resp, err := casheer.Client.CreateDebt(debt.Person, debt.Details, int(math.Round(debt.Amount*100)), debt.Currency, -2)
+		if err != nil {
+			fmt.Printf("could not create debt: %s\n", err.Error())
+			return
+		}
 		if showDebtResponse {
 			format.DisplayRawResponse(resp)
 			return
 		}
 
-		if errResp != nil {
-			format.DisplayErrorResponse(*errResp)
-			return
-		}
-
-		if resp != nil {
-			color.Printf(color.Green, "Added debt for %s with value %.2f (id %v).\n",
-				resp.Data.Attributes.Person, resp.Data.Attributes.Amount, resp.Data.Id)
-			return
-		}
+		fmt.Printf("Added debt for %s with value %.2f %s (id %v).\n",
+			resp.Data.Attributes.Person, float64(resp.Data.Attributes.Amount)*math.Pow10(resp.Data.Attributes.Exponent), resp.Data.Attributes.Currency, resp.Data.Id)
 		return
 	},
 }
