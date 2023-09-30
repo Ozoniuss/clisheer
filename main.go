@@ -21,8 +21,28 @@ THE SOFTWARE.
 */
 package main
 
-import "github.com/Ozoniuss/clisheer/cmd"
+import (
+	"fmt"
+	"os"
+
+	"github.com/Ozoniuss/casheer/client/httpclient"
+	"github.com/Ozoniuss/clisheer/casheer"
+	"github.com/Ozoniuss/clisheer/cmd"
+	"github.com/Ozoniuss/clisheer/signals"
+)
 
 func main() {
+
+	var err error
+	casheer.Client, err = httpclient.NewCasheerHTTPClient(
+		httpclient.WithCustomAuthority("localhost:8033"),
+	)
+
+	signals.ListenForTermination()
+	if err != nil {
+		fmt.Printf("Could not establish connection to casheer: %s\n", err.Error())
+		os.Exit(1)
+	}
+
 	cmd.Execute()
 }
