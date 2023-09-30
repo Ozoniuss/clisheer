@@ -1,10 +1,13 @@
 package format
 
 import (
+	"fmt"
+
 	"github.com/Ozoniuss/casheer/pkg/casheerapi"
-	"github.com/Ozoniuss/clisheer/internal/color"
 )
 
+// DisplayErrorResponse displays a jsonapi error response in a more compact
+// format.
 func DisplayErrorResponse(errResp casheerapi.ErrorResponse) {
-	color.Printf(color.Red, "%s: %s\n", errResp.Error.Title, errResp.Error.Detail)
+	fmt.Printf("%s: %s\n", errResp.Err.Title, errResp.Err.Detail)
 }
