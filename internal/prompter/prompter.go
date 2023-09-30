@@ -4,68 +4,80 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"strconv"
+
+	"github.com/Ozoniuss/clisheer/internal/color"
 )
 
-type FieldType byte
+// scanStringUntilValid is a helper provided to get a string input from the
+// terminal. It doesn't do any additional logic to simply retrieving the user
+// input; it is only provided for consistency.
+func scanStringUntilValid(s *bufio.Scanner, prefix string) string {
+	fmt.Print(prefix)
+	s.Scan()
+	return s.Text()
 
-const (
-	INT_TYPE FieldType = iota
-	FLOAT32_TYPE
-	BOOL_TYPE
-	STRING_TYPE
-)
-
-type TypedField struct {
-	Name  string
-	Ftype FieldType
 }
 
-// DefaultJSONPrompter interactively takes user input for the provided fields,
-// and returns the data including the field names in json format.
-func DefaultJSONPrompter(header string, fields ...TypedField) []byte {
-	fmt.Println(header)
-	s := bufio.NewScanner(os.Stdin)
-	out := make([]byte, 0, 32)
-	out = append(out, '{')
-
-	for _, f := range fields {
-		fmt.Print(f.Name + ": ")
+// scanIntUntilValid is a helper provided to get an int input from the terminal.
+// It will prompt the user for a value until the value is a valid integer.
+func scanIntUntilValid(s *bufio.Scanner, prefix string) int {
+	var valint int
+	var err error
+	for {
+		fmt.Print(prefix)
 		s.Scan()
-		appendJsonString(&out, f.Name)
-		out = append(out, ':')
-
-		// TODO: type validations
-		if f.Ftype == STRING_TYPE {
-			appendJsonString(&out, s.Text())
-		} else if f.Ftype == FLOAT32_TYPE {
-			appendJson(&out, s.Text())
-		} else if f.Ftype == INT_TYPE {
-			appendJson(&out, s.Text())
-		} else if f.Ftype == STRING_TYPE {
-			appendJson(&out, s.Text())
-		} else {
-			panic("prompter encountered invalid type")
+		val := s.Text()
+		if valint, err = strconv.Atoi(val); err != nil {
+			fmt.Println("Invalid number, please try again.")
+			continue
 		}
 
-		out = append(out, ',')
+		return valint
+	}
+}
+
+// scanIntUntilValid is a helper provided to get a float input from the terminal.
+// It will prompt the user for a value until the value is a valid floating
+// point number.
+func scanFloatUntilValid(s *bufio.Scanner, prefix string) float64 {
+	var valfloat float64
+	var err error
+	for {
+		fmt.Print(prefix)
+		s.Scan()
+		val := s.Text()
+		if valfloat, err = strconv.ParseFloat(val, 64); err != nil {
+			fmt.Println("Invalid number, please try again.")
+			continue
+		}
+		return float64(valfloat)
+	}
+}
+
+func promptYN(msg string) bool {
+	fmt.Print(msg, " y/n: ")
+	r := bufio.NewReader(os.Stdin)
+	var ans byte
+
+	for {
+		var err error
+		ans, err = r.ReadByte()
+		if err != nil {
+			color.Printf(color.Red, "Could not read answer: %s\n", err.Error())
+			fmt.Print("Try again: ")
+			continue
+		}
+		if (ans != 'y') && (ans != 'n') {
+			color.Printf(color.Red, "Invalid answer %c.", ans)
+			fmt.Print("Please select either y or n: ")
+			continue
+		}
+		break
 	}
 
-	out = out[:len(out)-1]
-
-	out = append(out, '}')
-	return out
-}
-
-// appendString adds a string value to the JSON representation (thus requiring
-// additional quotes).
-func appendJsonString(out *[]byte, val string) {
-	*out = append(*out, '"')
-	*out = append(*out, []byte(val)...)
-	*out = append(*out, '"')
-}
-
-// appendJson adds the byte representation of the value to the JSON
-// representation.
-func appendJson(out *[]byte, val string) {
-	*out = append(*out, []byte(val)...)
+	if ans == 'y' {
+		return true
+	}
+	return false
 }
